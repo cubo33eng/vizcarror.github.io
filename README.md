@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vizcarror - Historias de Terror</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.8)), url('https://st.depositphotos.com/1550726/4531/i/450/depositphotos_45317759-stock-photo-man-walking-in-a-mysterious.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; }
+            50% { text-shadow: 0 0 30px #ff0000, 0 0 60px #ff0000; }
+            100% { text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; }
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        
+        .nav-main {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .nav-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff0000;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin: 0 15px;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .nav-links a:hover {
+            color: #ff0000;
+        }
+        
+        /* Estilos del contador de visitas */
+        .visit-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            padding: 15px 20px;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            animation: glow 3s infinite;
+        }
+        
+        @keyframes glow {
+            0% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
+            50% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.3); }
+        }
+        
+        .counter-title {
+            font-size: 0.8rem;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            text-align: center;
+            opacity: 0.9;
+        }
+        
+        .counter-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            text-shadow: 0 0 10px #fff;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .counter-subtitle {
+            font-size: 0.7rem;
+            color: #fff;
+            text-align: center;
+            opacity: 0.8;
+            margin-top: 3px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #ff0000;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: #ff0000;
+        }
+        
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .story-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(255, 0, 0, 0.2);
+        }
+        
+        .story-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .story-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.8));
+        }
+        
+        .story-content {
+            padding: 20px;
+        }
+        
+        .story-date {
+            color: #ff0000;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .story-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        
+        .story-excerpt {
+            color: #ccc;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .featured-section {
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://www.mineraldelchico.com.mx/wp-content/uploads/2021/10/bosque_terror.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .featured-card {
+            background: rgba(0,0,0,0.8);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,0,0,0.3);
+        }
+        
+        .featured-title {
+            font-size: 2rem;
+            color: #ff0000;
+            margin-bottom: 20px;
+        }
+        
+        .featured-text {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .categories {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+        
+        .category-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: 2px solid #ff0000;
+            color: #ff0000;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover,
+        .category-btn.active {
+            background: #ff0000;
+            color: white;
+        }
+        
+        .footer {
+            background: #000;
+            padding: 50px 0;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        
+        .footer-content {
+            margin-bottom: 30px;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #ff0000;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: #ff0000;
+            transform: scale(1.1);
+        }
+        
+        /* Estilos para la sección de redes sociales */
+        .social-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+        
+        .social-card {
+            background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+            border: 2px solid #ff0000;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
+        }
+        
+        .social-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(255, 0, 0, 0.4);
+            border-color: #ff3333;
+        }
+        
+        .social-icon {
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .social-title {
+            font-size: 2rem;
+            color: #ff0000;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        .social-description {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .social-btn {
+            font-size: 1.1rem;
+            padding: 15px 35px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.08);
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .stories-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .visit-counter {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+            }
+            
+            .counter-number {
+                font-size: 1.2rem;
+            }
+            
+            .social-card {
+                padding: 30px 20px;
+                margin: 0 20px;
+            }
+            
+            .social-title {
+                font-size: 1.5rem;
+            }
+            
+            .social-description {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-main">
+        <div class="nav-container">
+            <div class="nav-logo">VIZCARROR</div>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#historias">Historias</a></li>
+                <li><a href="#creepypastas">Creepypastas</a></li>
+                <li><a href="#leyendas">Leyendas</a></li>
+                <li><a href="#redes">Redes Sociales</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contador de visitas -->
+    <div class="visit-counter">
+        <div class="counter-title">👁️ Almas Perdidas</div>
+        <div class="counter-number" id="visitCount">0</div>
+        <div class="counter-subtitle">han pasado por aquí</div>
+    </div>
+
+    <header class="header" id="inicio">
+        <div class="logo">VIZCARROR</div>
+        <div class="tagline">Donde los miedos cobran vida</div>
+        <a href="#historias" class="btn">Explorar Historias</a>
+    </header>
+
+    <section class="section" id="historias">
+        <div class="container">
+            <h2 class="section-title">Historias de Terror</h2>
+            
+            <div class="categories">
+                <button class="category-btn active">Todas</button>
+                <button class="category-btn">Terror Real</button>
+                <button class="category-btn">Paranormal</button>
+                <button class="category-btn">Psicológico</button>
+                <button class="category-btn">Urbanas</button>
+            </div>
+            
+            <div class="stories-grid">
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://e00-elmundo.uecdn.es/assets/multimedia/imagenes/2022/12/14/16710396696173.jpg');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">1 diciembre, 2023</div>
+                        <h3 class="story-title">El Sicario</h3>
+                        <p class="story-excerpt">Una sombra acecha en las calles nocturnas, donde el silencio se convierte en el preludio del terror más absoluto...</p>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://historiasdeterror.com/wp-content/uploads/2024/04/la-bailarina-de-trapo-historia-de-terror-1024x576.jpg');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">21 junio, 2024</div>
+                        <h3 class="story-title">Espectro de una Bailarina</h3>
+                        <p class="story-excerpt">En el viejo teatro abandonado, su danza eterna continúa cada medianoche, esperando por su última audiencia...</p>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://www.sopitas.com/wp-content/uploads/2023/07/lo-que-no-sabias-de-la-isla-de-las-munecas-2.jpg');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">22 junio, 2023</div>
+                        <h3 class="story-title">La Isla de las Muñecas</h3>
+                        <p class="story-excerpt">Entre los canales de Xochimilco, una isla guarda secretos que ni la muerte puede silenciar...</p>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://i.ytimg.com/vi/GTZEpU0OHCo/maxresdefault.jpg');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">20 junio, 2024</div>
+                        <h3 class="story-title">Pacto de Sangre</h3>
+                        <p class="story-excerpt">Algunos acuerdos van más allá de la vida, sellados con sangre y venganza eterna...</p>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://www.pagina12.com.ar/fotos/thumb/320/radar/20160320/notas_r/sl02fo04.jpg');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">28 noviembre, 2022</div>
+                        <h3 class="story-title">Los Dibujos</h3>
+                        <p class="story-excerpt">En las paredes de una casa abandonada, dibujos infantiles revelan una verdad aterradora...</p>
+                    </div>
+                </div>
+                
+                <div class="story-card">
+                    <div class="story-image" style="background-image: url('https://images.opusdei.org/?url=https://s3-eu-west-1.amazonaws.com/images-opus-dei/article/2023/2/almas-purgatorio-animas20230207150336782288.jpg&w=600&il&output=jpg&q=85');">
+                        <div class="story-overlay"></div>
+                    </div>
+                    <div class="story-content">
+                        <div class="story-date">22 agosto, 2022</div>
+                        <h3 class="story-title">Ánimas del Purgatorio</h3>
+                        <p class="story-excerpt">Entre el cielo y el infierno, almas perdidas buscan redención en los lugares más oscuros...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="redes">
+        <div class="container">
+            <h2 class="section-title">Síguenos en Redes Sociales</h2>
+            <div class="social-section">
+                <div class="social-card">
+                    <div class="social-icon">
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="#ff0000">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </div>
+                    <h3 class="social-title">Facebook</h3>
+                    <p class="social-description">
+                        Únete a nuestra comunidad del terror en Facebook. Comparte tus experiencias paranormales, 
+                        comenta las historias más escalofriantes y mantente al día con las últimas actualizaciones 
+                        de contenido terrorífico.
+                    </p>
+                    <a href="https://web.facebook.com/VizcayaMexicali" target="_blank" class="btn social-btn">
+                        <span>👻 Seguir en Facebook</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section featured-section">
+        <div class="container">
+            <div class="featured-card">
+                <h2 class="featured-title">¿Tienes una Historia que Contar?</h2>
+                <p class="featured-text">
+                    Cada persona guarda una historia de terror en su interior. Ya sea una experiencia paranormal, 
+                    un encuentro inexplicable o simplemente una pesadilla que se sintió demasiado real. 
+                    Comparte tu historia con nosotros y forma parte de la comunidad del terror.
+                </p>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdBxIfWOmYPFPnyUkt22LY1RCziOWPBI3OLrfBbDij1Cadw4g/viewform?usp=dialog" target="_blank" class="btn">Comparte tu Historia</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#inicio">Inicio</a>
+                    <a href="#historias">Historias</a>
+                    <a href="#creepypastas">Creepypastas</a>
+                    <a href="#leyendas">Leyendas</a>
+                    <a href="#redes">Redes Sociales</a>
+                    <a href="#contacto">Contacto</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://web.facebook.com/VizcayaMexicali" target="_blank" title="Facebook">f</a>
+                    <a href="#" title="Twitter">t</a>
+                    <a href="#" title="Instagram">i</a>
+                    <a href="#" title="YouTube">y</a>
+                </div>
+                <p>&copy; 2024 Vizcarror. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Contador de visitas
+        let visitCount = 0;
+        const visitCountElement = document.getElementById('visitCount');
+        
+        // Función para incrementar el contador
+        function incrementVisitCount() {
+            visitCount++;
+            updateVisitDisplay();
+        }
+        
+        // Función para actualizar la visualización del contador
+        function updateVisitDisplay() {
+            visitCountElement.textContent = visitCount.toLocaleString();
+        }
+        
+        // Función para animar el contador al cargar
+        function animateCounter() {
+            let currentCount = 0;
+            const targetCount = Math.floor(Math.random() * 1000) + 500; // Número aleatorio entre 500-1500
+            const increment = Math.ceil(targetCount / 50);
+            
+            const counterAnimation = setInterval(() => {
+                currentCount += increment;
+                if (currentCount >= targetCount) {
+                    currentCount = targetCount;
+                    clearInterval(counterAnimation);
+                    visitCount = currentCount;
+                }
+                visitCountElement.textContent = currentCount.toLocaleString();
+            }, 30);
+        }
+        
+        // Simular visitas adicionales periódicamente
+        function simulateVisits() {
+            setInterval(() => {
+                if (Math.random() < 0.3) { // 30% de probabilidad cada 10 segundos
+                    incrementVisitCount();
+                }
+            }, 10000);
+        }
+        
+        // Inicializar el contador cuando se carga la página
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                animateCounter();
+                setTimeout(simulateVisits, 5000); // Comenzar simulación después de 5 segundos
+            }, 1000);
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Category filtering
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const storyCards = document.querySelectorAll('.story-card');
+
+        categoryBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                categoryBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Here you would implement actual filtering logic
+                // For now, all cards remain visible
+            });
+        });
+
+        // Story card click handlers
+        storyCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const title = this.querySelector('.story-title').textContent;
+                alert(`Abriendo historia: ${title}`);
+                // Incrementar contador cuando se hace clic en una historia
+                incrementVisitCount();
+            });
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('.nav-main');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(0,0,0,0.95)';
+            } else {
+                nav.style.background = 'rgba(0,0,0,0.9)';
+            }
+        });
+    </script>
+</body>
+</html>
